@@ -53,7 +53,34 @@ train_faces /= 255.
 val_faces /= 255.
 
 model = Sequential()
-model.add(Flatten(input_shape=input_shape))
+model.add(Conv2D(32,
+    (3, 3),
+    input_shape=input_shape,
+    padding = "same",
+    activation='relu'))
+model.add(Conv2D(64,
+    (3, 3),
+    input_shape=input_shape,
+    padding = "same",
+    activation='relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Conv2D(128,
+    (3, 3),
+    input_shape=input_shape,
+    padding = "same",
+    activation='relu'))
+model.add(Conv2D(256,
+    (3, 3),
+    input_shape=input_shape,
+    padding = "same",
+    activation='relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Flatten())
+model.add(Dropout(config.dropout))
+model.add(Dense(256, activation='relu'))
+model.add(Dropout(config.dropout))
+model.add(Dense(512, activation='relu'))
+model.add(Dropout(config.dropout))
 model.add(Dense(num_classes, activation="softmax"))
 
 model.compile(optimizer='adam', loss='categorical_crossentropy',
